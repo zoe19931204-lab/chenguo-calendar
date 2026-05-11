@@ -1,705 +1,576 @@
-<!DOCTYPE html>
+
+# 生成新的手机全屏版财经日历HTML
+
+html_code = '''<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>东财策略陈果团队 下周重磅财经日历 | 2026.05.11-05.17</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>东财策略陈果团队 | 下周重磅财经日历</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Noto Sans SC', 'system-ui', 'sans-serif'],
-                    },
-                    colors: {
-                        'brand-dark': '#0f172a',
-                        'brand-card': '#1e293b',
-                        'brand-blue': '#3b82f6',
-                        'brand-cyan': '#06b6d4',
-                        'brand-accent': '#8b5cf6',
-                    },
-                    animation: {
-                        'fade-in': 'fadeIn 0.5s ease-out',
-                        'slide-up': 'slideUp 0.6s ease-out',
-                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                    },
-                    keyframes: {
-                        fadeIn: {
-                            '0%': { opacity: '0' },
-                            '100%': { opacity: '1' },
-                        },
-                        slideUp: {
-                            '0%': { transform: 'translateY(20px)', opacity: '0' },
-                            '100%': { transform: 'translateY(0)', opacity: '1' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
     <style>
-        body {
-            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
-            min-height: 100vh;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        .glass-card {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .category-tag {
-            transition: all 0.3s ease;
-        }
-        .category-tag:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        }
-        .timeline-line {
-            background: linear-gradient(to bottom, #3b82f6, #8b5cf6, #06b6d4);
-        }
-        .event-card {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .event-card:hover {
-            transform: translateX(8px);
-            border-left-width: 4px;
-        }
-        .date-badge {
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-        }
-        .weekend-badge {
-            background: linear-gradient(135deg, #475569 0%, #334155 100%);
-        }
-        .highlight-pulse {
-            animation: pulse-border 2s infinite;
-        }
-        @keyframes pulse-border {
-            0%, 100% { border-color: rgba(59, 130, 246, 0.3); }
-            50% { border-color: rgba(59, 130, 246, 0.8); }
-        }
-        .category-macro { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
-        .category-earnings { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
-        .category-bond { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
-        .category-ai { background: rgba(139, 92, 246, 0.15); color: #a78bfa; border: 1px solid rgba(139, 92, 246, 0.3); }
-        .category-diplomacy { background: rgba(236, 72, 153, 0.15); color: #f472b6; border: 1px solid rgba(236, 72, 153, 0.3); }
-        .category-fed { background: rgba(6, 182, 212, 0.15); color: #22d3ee; border: 1px solid rgba(6, 182, 212, 0.3); }
-        .category-ipo { background: rgba(249, 115, 22, 0.15); color: #fb923c; border: 1px solid rgba(249, 115, 22, 0.3); }
-        .category-industry { background: rgba(20, 184, 166, 0.15); color: #2dd4bf; border: 1px solid rgba(20, 184, 166, 0.3); }
-        .category-robot { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
-        .category-oil { background: rgba(234, 179, 8, 0.15); color: #facc15; border: 1px solid rgba(234, 179, 8, 0.3); }
-        .category-geo { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
         
-        .filter-btn.active {
-            background: rgba(59, 130, 246, 0.2);
-            border-color: #3b82f6;
-            color: #60a5fa;
+        :root {
+            --orange: #e95503;
+            --orange-light: #ff7a3a;
+            --orange-dark: #c24400;
+            --blue: #4f80bd;
+            --blue-light: #6b9bd1;
+            --blue-dark: #3a6fa8;
+            --gray: #d9d9d9;
+            --gray-light: #f0f0f0;
+            --gray-dark: #a0a0a0;
+            --bg-dark: #1a1a2e;
+            --bg-card: #16213e;
         }
+        
+        body {
+            font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* 顶部标题区 */
+        .header {
+            background: linear-gradient(135deg, var(--orange) 0%, var(--orange-dark) 100%);
+            padding: 3vh 4vw;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 60%;
+            height: 200%;
+            background: rgba(255,255,255,0.05);
+            transform: rotate(15deg);
+        }
+        
+        .header-tag {
+            font-size: 1.8vw;
+            font-weight: 500;
+            color: rgba(255,255,255,0.8);
+            letter-spacing: 0.5vw;
+            margin-bottom: 1vh;
+        }
+        
+        .header-title {
+            font-size: 5vw;
+            font-weight: 900;
+            color: #fff;
+            line-height: 1.2;
+            margin-bottom: 1vh;
+        }
+        
+        .header-sub {
+            font-size: 3vw;
+            font-weight: 700;
+            color: rgba(255,255,255,0.9);
+        }
+        
+        .header-date {
+            position: absolute;
+            right: 4vw;
+            top: 50%;
+            transform: translateY(-50%);
+            text-align: right;
+        }
+        
+        .header-date .date-range {
+            font-size: 3.5vw;
+            font-weight: 700;
+            color: #fff;
+        }
+        
+        .header-date .date-year {
+            font-size: 2.5vw;
+            color: rgba(255,255,255,0.7);
+        }
+        
+        /* 联系人条 */
         .contact-bar {
-            background: linear-gradient(90deg, rgba(30, 41, 59, 0.9), rgba(59, 130, 246, 0.1));
-            border-top: 1px solid rgba(59, 130, 246, 0.3);
+            background: rgba(26, 26, 46, 0.95);
+            padding: 1.5vh 4vw;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(233, 85, 3, 0.2);
+        }
+        
+        .contact-info {
+            font-size: 2.2vw;
+            color: var(--gray);
+        }
+        
+        .contact-info span {
+            color: var(--orange);
+            font-weight: 700;
+        }
+        
+        .contact-phone {
+            font-size: 2.5vw;
+            color: var(--blue);
+            font-weight: 700;
+        }
+        
+        /* 主体内容区 - 矩阵布局 */
+        .main-content {
+            padding: 2vh 3vw;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2vw;
+        }
+        
+        /* 日期卡片 */
+        .day-card {
+            background: linear-gradient(145deg, rgba(22, 33, 62, 0.9), rgba(26, 26, 46, 0.9));
+            border-radius: 3vw;
+            overflow: hidden;
+            border: 1px solid rgba(233, 85, 3, 0.15);
+            transition: transform 0.3s ease;
+        }
+        
+        .day-card:active {
+            transform: scale(0.98);
+        }
+        
+        /* 卡片头部 */
+        .day-header {
+            padding: 2vh 3vw;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .day-header.monday { background: linear-gradient(135deg, var(--orange) 0%, var(--orange-dark) 100%); }
+        .day-header.tuesday { background: linear-gradient(135deg, var(--blue) 0%, var(--blue-dark) 100%); }
+        .day-header.wednesday { background: linear-gradient(135deg, var(--orange-light) 0%, var(--orange) 100%); }
+        .day-header.thursday { background: linear-gradient(135deg, var(--blue-light) 0%, var(--blue) 100%); }
+        .day-header.friday { background: linear-gradient(135deg, var(--orange-dark) 0%, #a03000 100%); }
+        .day-header.weekend { background: linear-gradient(135deg, #4a4a6a 0%, #2a2a4a 100%); }
+        
+        .day-name {
+            font-size: 4vw;
+            font-weight: 900;
+            color: #fff;
+        }
+        
+        .day-date {
+            font-size: 2.5vw;
+            color: rgba(255,255,255,0.8);
+            font-weight: 500;
+        }
+        
+        .day-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 0.5vh 2vw;
+            border-radius: 3vw;
+            font-size: 2vw;
+            color: #fff;
+            font-weight: 700;
+        }
+        
+        /* 卡片内容 */
+        .day-content {
+            padding: 1.5vh 3vw;
+        }
+        
+        .event-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 2vw;
+            padding: 1.2vh 0;
+            border-bottom: 1px solid rgba(217, 217, 217, 0.1);
+        }
+        
+        .event-item:last-child {
+            border-bottom: none;
+        }
+        
+        .event-dot {
+            width: 1.5vw;
+            height: 1.5vw;
+            border-radius: 50%;
+            margin-top: 0.8vh;
+            flex-shrink: 0;
+        }
+        
+        .dot-macro { background: var(--orange); box-shadow: 0 0 4px var(--orange); }
+        .dot-earnings { background: var(--blue); box-shadow: 0 0 4px var(--blue); }
+        .dot-event { background: var(--gray); }
+        .dot-geo { background: #ff4444; box-shadow: 0 0 4px #ff4444; }
+        
+        .event-text {
+            flex: 1;
+        }
+        
+        .event-title {
+            font-size: 2.8vw;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.4;
+            margin-bottom: 0.3vh;
+        }
+        
+        .event-desc {
+            font-size: 2.2vw;
+            color: var(--gray-dark);
+            line-height: 1.3;
+        }
+        
+        .event-time {
+            font-size: 2vw;
+            color: var(--orange);
+            font-weight: 700;
+            white-space: nowrap;
+        }
+        
+        /* 重磅标记 */
+        .star-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--orange), var(--orange-light));
+            color: #fff;
+            font-size: 1.8vw;
+            padding: 0.2vh 1.5vw;
+            border-radius: 2vw;
+            margin-left: 1vw;
+            font-weight: 700;
+        }
+        
+        /* 底部 */
+        .footer {
+            padding: 2vh 4vw;
+            text-align: center;
+            border-top: 1px solid rgba(233, 85, 3, 0.1);
+        }
+        
+        .footer-text {
+            font-size: 2vw;
+            color: var(--gray-dark);
+        }
+        
+        /* 周末卡片特殊处理 */
+        .weekend-card {
+            grid-column: span 2;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+        }
+        
+        .weekend-card .day-header {
+            grid-column: span 2;
+        }
+        
+        .weekend-card .day-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2vw;
+        }
+        
+        /* 横屏优化 */
+        @media (orientation: landscape) {
+            .main-content {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .weekend-card {
+                grid-column: span 3;
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+            .weekend-card .day-header {
+                grid-column: span 3;
+            }
+            .weekend-card .day-content {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
         }
     </style>
 </head>
-<body class="text-slate-200 font-sans antialiased p-4 md:p-8">
-
-    <!-- Header Section -->
-    <header class="max-w-6xl mx-auto mb-8 animate-fade-in">
-        <div class="glass-card rounded-2xl p-6 md:p-8 relative overflow-hidden">
-            <div class="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
-            <div class="absolute bottom-0 left-0 w-48 h-48 bg-purple-500/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
-            
-            <div class="relative z-10">
-                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                    <div>
-                        <div class="flex items-center gap-3 mb-2">
-                            <div class="h-8 w-1 bg-gradient-to-b from-blue-500 to-purple-600 rounded-full"></div>
-                            <span class="text-sm font-bold text-blue-400 tracking-wider uppercase">Eastmoney Strategy</span>
-                        </div>
-                        <h1 class="text-2xl md:text-4xl font-black text-white mb-2 tracking-tight">
-                            东财策略陈果团队
-                        </h1>
-                        <h2 class="text-xl md:text-3xl font-bold text-blue-300 mb-2">
-                            下周重磅财经日历
-                        </h2>
-                        <p class="text-slate-400 text-sm md:text-base font-medium flex items-center gap-2">
-                            <span class="inline-block w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
-                            2026.05.11 — 05.17 | 北京时间 | 全球聚焦中美
-                        </p>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <div class="text-right hidden md:block">
-                            <div class="text-xs text-slate-500 uppercase tracking-wider">当前时间</div>
-                            <div class="text-lg font-mono font-bold text-blue-400" id="live-clock">--:--:--</div>
-                        </div>
-                        <div class="h-12 w-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg shadow-blue-500/30">
-                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-6 flex flex-wrap gap-2">
-                    <span class="text-xs text-slate-400 font-medium mr-2 py-1">全周关注：</span>
-                    <span class="category-tag px-3 py-1 rounded-full text-xs font-bold category-macro cursor-pointer">中美CPI/PPI</span>
-                    <span class="category-tag px-3 py-1 rounded-full text-xs font-bold category-diplomacy cursor-pointer">特朗普访华预期</span>
-                    <span class="category-tag px-3 py-1 rounded-full text-xs font-bold category-fed cursor-pointer">美联储换帅/讲话</span>
-                    <span class="category-tag px-3 py-1 rounded-full text-xs font-bold category-geo cursor-pointer">伊朗局势</span>
-                    <span class="category-tag px-3 py-1 rounded-full text-xs font-bold category-earnings cursor-pointer">科技龙头财报</span>
-                    <span class="category-tag px-3 py-1 rounded-full text-xs font-bold category-ai cursor-pointer">百度AI大会</span>
-                </div>
-
-                <div class="mt-6 pt-6 border-t border-slate-700/50">
-                    <div class="flex flex-wrap gap-2 items-center">
-                        <span class="text-xs text-slate-500 mr-2">筛选：</span>
-                        <button onclick="filterEvents('all')" class="filter-btn active px-3 py-1.5 rounded-lg text-xs font-medium border border-slate-600 text-slate-300 hover:border-slate-400 transition-all">全部</button>
-                        <button onclick="filterEvents('macro')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-medium border border-slate-600 text-slate-300 hover:border-slate-400 transition-all">宏观</button>
-                        <button onclick="filterEvents('earnings')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-medium border border-slate-600 text-slate-300 hover:border-slate-400 transition-all">财报</button>
-                        <button onclick="filterEvents('bond')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-medium border border-slate-600 text-slate-300 hover:border-slate-400 transition-all">债市</button>
-                        <button onclick="filterEvents('ai')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-medium border border-slate-600 text-slate-300 hover:border-slate-400 transition-all">AI</button>
-                        <button onclick="filterEvents('diplomacy')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-medium border border-slate-600 text-slate-300 hover:border-slate-400 transition-all">外交</button>
-                        <button onclick="filterEvents('fed')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-medium border border-slate-600 text-slate-300 hover:border-slate-400 transition-all">联储</button>
-                        <button onclick="filterEvents('geo')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-medium border border-slate-600 text-slate-300 hover:border-slate-400 transition-all">地缘</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <main class="max-w-6xl mx-auto relative">
-        <div class="absolute left-8 md:left-12 top-0 bottom-0 w-1 timeline-line rounded-full hidden md:block"></div>
-
-        <!-- Monday 05.11 -->
-        <div class="relative mb-6 animate-slide-up" style="animation-delay: 0.1s" data-day="monday">
-            <div class="flex flex-col md:flex-row gap-4 md:gap-8">
-                <div class="md:w-24 flex-shrink-0 flex md:flex-col items-center md:items-end gap-3 md:gap-1 z-10">
-                    <div class="date-badge w-16 h-16 md:w-20 md:h-20 rounded-2xl flex flex-col items-center justify-center text-white shadow-lg shadow-blue-500/20">
-                        <span class="text-xs md:text-sm font-medium opacity-90">05.11</span>
-                        <span class="text-lg md:text-2xl font-black">周一</span>
-                    </div>
-                    <div class="hidden md:block w-4 h-4 rounded-full bg-blue-500 border-4 border-slate-900 absolute left-10 top-8"></div>
-                </div>
-
-                <div class="flex-1 glass-card rounded-xl p-4 md:p-5 space-y-3">
-                    <div class="event-item flex items-start gap-3 highlight-pulse rounded-lg p-2 -mx-2 border border-transparent" data-category="macro">
-                        <span class="category-tag px-2 py-0.5 rounded text-[10px] font-bold category-macro flex-shrink-0 mt-0.5">宏观</span>
-                        <div class="flex-1">
-                            <p class="text-sm md:text-base font-bold text-white">中国4月CPI、PPI <span class="text-xs font-normal text-red-400 ml-1">★ 重磅</span></p>
-                            <p class="text-xs text-slate-500 mt-0.5">09:30 发布 | 市场关注通胀回升态势及内外需分化</p>
-                        </div>
-                        <span class="text-xs text-blue-400 font-mono font-bold">09:30</span>
-                    </div>
-                    
-                    <div class="event-item flex items-start gap-3" data-category="bond">
-                        <span class="category-tag px-2 py-0.5 rounded text-[10px] font-bold category-bond flex-shrink-0 mt-0.5">债市</span>
-                        <div class="flex-1">
-                            <p class="text-sm md:text-base font-medium text-slate-100">美国财政部1250亿再融资：3年期580亿美元</p>
-                            <p class="text-xs text-slate-500 mt-0.5">美国财政部启动总额1250亿美元的季度再融资操作</p>
-                        </div>
-                    </div>
-
-                    <div class="event-item flex items-start gap-3" data-category="earnings">
-                        <span class="category-tag px-2 py-0.5 rounded text-[10px] font-bold category-earnings flex-shrink-0 mt-0.5">业绩</span>
-                        <div class="flex-1">
-                            <p class="text-sm md:text-base font-medium text-slate-100">贵州茅台2025年度及2026年Q1业绩说明会</p>
-                            <p class="text-xs text-slate-500 mt-0.5">16:00-17:30 | 全景路演网络文字互动</p>
-                        </div>
-                        <span class="text-xs text-slate-600 font-mono">16:00</span>
-                    </div>
-
-                    <div class="event-item flex items-start gap-3" data-category="ipo">
-                        <span class="category-tag px-2 py-0.5 rounded text-[10px] font-bold category-ipo flex-shrink-0 mt-0.5">IPO</span>
-                        <div class="flex-1">
-                            <p class="text-sm md:text-base font-medium text-slate-100">国仪量子科创板IPO上会</p>
-                        </div>
-                    </div>
-
-                    <div class="event-item flex items-start gap-3" data-category="earnings">
-                        <span class="category-tag px-2 py-0.5 rounded text-[10px] font-bold category-earnings flex-shrink-0 mt-0.5">财报</span>
-                        <div class="flex-1">
-                            <p class="text-sm md:text-base font-medium text-slate-100">美股：Circle（稳定币龙头）</p>
-                        </div>
-                    </div>
-
-                    <div class="event-item flex items-start gap-3" data-category="geo">
-                        <span class="category-tag px-2 py-0.5 rounded text-[10px] font-bold category-geo flex-shrink-0 mt-0.5">地缘</span>
-                        <div class="flex-1">
-                            <p class="text-sm md:text-base font-medium text-slate-100">继续关注伊朗局势进展（全周事件）</p>
-                            <p class="text-xs text-slate-500 mt-0.5">美伊局势呈现"边打边谈"复杂局面，关注霍尔木兹海峡动态</p>
-                        </div>
-                    </div>
-
-                    <div class="event-item flex items-start gap-3" data-category="fed">
-                        <span class="category-tag px-2 py-0.5 rounded text-[10px] font-bold category-fed flex-shrink-0 mt-0.5">联储</span>
-                        <div class="flex-1">
-                            <p class="text-sm md:text-base font-medium text-slate-100">沃什美联储主席提名最终确认投票（全周事件）</p>
-                            <p class="text-xs text-slate-500 mt-0.5">预计于5月11日当周进行参议院全院最终确认投票</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tuesday 05.12 -->
-        <div class="relative mb-6 animate-slide-up" style="animation-delay: 0.2s" data-day="tuesday">
-            <div class="flex flex-col md:flex-row gap-4 md:gap-8">
-                <div class="md:w-24 flex-shrink-0 flex md:flex-col items-center md:items-end gap-3 md:gap-1 z-10">
-                    <div class="date-badge w-16 h-16 md:w-20 md:h-20 rounded-2xl flex flex-col items-center justify-center text-white shadow-lg shadow-blue-500/20">
-                        <span class="text-xs md:text-sm font-medium opacity-90">05.12</span>
-                        <span class="text-lg md:text-2xl font-black">周二</span>
-                    </div>
-                    <div class="hidden md:block w-4 h-4 rounded-full bg-blue-500 border-4 border-slate-900 absolute left-10 top-8"></div>
-                </div>
-
-                <div class="flex-1 glass-card rounded-xl p-4 md:p-5 space-y-3">
-                    <div class="event-item flex items-start gap-3 highlight-pulse rounded-lg p-2 -mx-2 border border-transparent" data-category="macro">
-                        <span class="category-tag px-2 py-0.5 rounded text-[10px] font-bold category-macro flex-shrink-0 mt-0.5">宏观</span>
-                        <div class="flex-1">
-                            <p class="text-sm md:text-base font-bold text-white">美国4月CPI <span class="text-xs font-normal text-red-400 ml-1">★ 重磅</span></p>
-                            <p class="text-xs text-slate-500 mt-0.5">20:30 发布 | 市场预期受中东局势推升能源价格影响，通胀或继续上行</p>
-                        </div>
-                        <span class="text-xs text-blue-400 font-mono font-bold">20:30</span>
-                    </div>
-
-                    <div class="event-item flex items-start gap-3" data-category="ai">
-                        <span class="category-tag px-2 py-0.5 rounded text-[10px] font-bold category-ai flex-shrink-0 mt-0.5">AI</span>
-                        <div class="flex-1">
-                            <p class="text-sm md:text-base font-medium text-slate-100">智元APC2026香港：首届香港具身智能产业峰会</p>
-                            <p class="text-xs text-slate-500 mt-0.5">智元（AGIBOT）联合香港中华联谊会举办</p>
-                        </div>
-                    </div>
-
-                    <div class="event-item flex items-start gap-3" data-category="ai">
-                        <span class="category-tag px-2 py-0.5 rounded text-[10px] font-bold category-ai flex-shrink-0 mt-0.5">AI</span>
-                        <div class="flex-1">
-                            <p class="text-sm md:text-base font-medium text-slate-100">阿里云域名产品调价</p>
-                            <p class="text-xs text-slate-500 mt-0.5">5月12日零时起执行，.icu/.cyou/.bond续费125元/年</p>
-                        </div>
-                    </div>
-
-                    <div class="event-item flex items-start gap-3" data-category="earnings">
-                        <span class="category-tag px-2 py-0.5 rounded text-[10px] font-bold category-earnings flex-shrink-0 mt-0.5">财报</span>
-                        <div class="flex-1">
-                            <p class="text-sm md:text-base font-medium text-slate-100">京东一季报电话会</p>
-                            <p class="text-xs text-slate-500 mt-0.5">20:00 | 美股盘前发布业绩，晚上召开电话会</p>
-                        </div>
-                        <span class="text-xs text-slate-600 font-mono">20:00</span>
-                    </div>
-
-                    <div class="event-item flex items-start gap-3" data-category="earnings">
-                        <span class="category-tag px-2 py-0.5 rounded text-[10px] font-bold category-earnings flex-shrink-0 mt-0.5">财报</span>
-                        <div class="flex-1">
-                            <p class="text-sm md:text-base font-medium text-slate-100">港股：京东、京东物流、捷讯交易宝</p>
-                        </div>
-                    </div>
-
-                    <div class="event-item flex items-start gap-3" data-category="bond">
-                        <span class="category-tag px-2 py-0.5 rounded text-[10px] font-bold category-bond flex-shrink-0 mt-0.5">债市</span>
-                        <div class="flex-1">
-                            <p class="text-sm md:text-base font-medium text-slate-100">美债10年期420亿美元</p>
-                        </div>
-                    </div>
-
-                    <div class="event-item flex items-start gap-3" data-category="fed">
-                        <span class="category-tag px-2 py-0.5 rounded text-[10px] font-bold category-fed flex-shrink-0 mt-0.5">联储</span>
-                        <div class="flex-1">
-                            <p class="text-sm md:text-base font-medium text-slate-100">纽约联储主席威廉姆斯等多位美联储官员发表讲话</p>
-                            <p class="text-xs text-slate-500 mt-0.5">15:15 | 参与货币政策小组讨论</p>
-                        </div>
-                        <span class="text-xs text-slate-600 font-mono">15:15</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Wednesday 05.13 -->
-        <div class="relative mb-6 animate-slide-up" style="animation-delay: 0.3s" data-day="wednesday">
-            <div class="flex flex-col md:flex-row gap-4 md:gap-8">
-                <div class="md:w-24 flex-shrink-0 flex md:flex-col items-center md:items-end gap-3 md:gap-1 z-10">
-                    <div class="date-badge w-16 h-16 md:w-20 md:h-20 rounded-2xl flex flex-col items-center justify-center text-white shadow-lg shadow-blue-500/20">
-                        <span class="text-xs md:text-sm font-medium opacity-90">05.13</span>
-                        <span class="text-lg md:text-2xl font-black">周三</span>
-                    </div>
-                    <div class="hidden md:block w-4 h-4 rounded-full bg-blue-500 border-4 border-slate-900 absolute left-10 top-8"></div>
-                </div>
-
-                <div class="flex-1 glass-card rounded-xl p-4 md:p-5 space-y-3">
-                    <div class="event-item flex items-start gap-3 highlight-pulse rounded-lg p-2 -mx-2 border border-transparent" data-category="macro">
-                        <span class="category-tag px-2 py-0.5 rounded text-[10px] font-bold category-macro flex-shrink-0 mt-0.5">宏观</span>
-                        <div class="flex-1">
-                            <p class="text-sm md:text-base font-bold text-white">美国4月PPI <span class="text-xs font-normal text-red-400 ml-1">★ 重磅</span></p>
-                            <p class="text-xs text-slate-500 mt-0.5">20:30 发布 | 市场关注生产端通胀压力</p>
-                        </div>
-                        <span class="text-xs text-blue-400 font-mono font-bold">20:30</span>
-                    </div>
-
-                    <div class="event-item flex items-start gap-3 highlight-pulse rounded-lg p-2 -mx-2 border border-transparent" data-category="earnings">
-                        <span class="category-tag px-2 py-0.5 rounded text-[10px] font-bold category-earnings flex-shrink-0 mt-0.5">财报</span>
-                        <div class="flex-1">
-                            <p class="text-sm md:text-base font-bold text-white">阿里一季报电话会 19:30 | 腾讯一季报电话会 20:00 <span class="text-xs font-normal text-red-400 ml-1">★ 重磅</span></p>
-                            <p class="text-xs text-slate-500 mt-0.5">关注云业务增速与AI资本开支</p>
-                        </div>
-                        <span class="text-xs text-blue-400 font-mono font-bold">19:30</span>
-                    </div>
-
-                    <div class="event-item flex items-start gap-3" data-category="ai">
-                        <span class="category-tag px-2 py-0.5 rounded text-[10px] font-bold category-ai flex-shrink-0 mt-0.5">AI</span>
-                        <div class="flex-1">
-                            <p class="text-sm md:text-base font-medium text-slate-100">Create 2026百度AI开发者大会开幕</p>
-                            <p class="text-xs text-slate-500 mt-0.5">5月13-14日北京举办，关注「芯-云-模-体」全栈AI布局</p>
-                        </div>
-                    </div>
-
-                    <div class="event-item flex items-start gap-3" data-category="oil">
-                        <span class="category-tag px-2 py-0.5 rounded text-[10px] font-bold category-oil flex-shrink-0 mt-0.5">原油</span>
-                        <div class="flex-1">
-                            <p class="text-sm md:text-base font-medium text-slate-100">OPEC+公布月度原油市场报告</p>
-                        </div>
-                    </div>
-
-                    <div class="event-item flex items-start gap-3" data-category="earnings">
-                        <span class="category-tag px-2 py-0.5 rounded text-[10px] font-bold category-earnings flex-shrink-0 mt-0.5">财报</span>
-                        <div class="flex-1">
-                            <p class="text-sm md:text-base font-medium text-slate-100">港股：腾讯控股、TCL电子、阿里巴巴、阳光油砂</p>
-                        </div>
-                    </div>
-
-                    <div class="event-item flex items-start gap-3" data-category="bond">
-                        <span class="category-tag px-2 py-0.5 rounded text-[10px] font-bold category-bond flex-shrink-0 mt-0.5">债市</span>
-                        <div class="flex-1">
-                            <p class="text-sm md:text-base font-medium text-slate-100">美债30年期250亿美元</p>
-                        </div>
-                    </div>
-
-                    <div class="event-item flex items-start gap-3" data-category="fed">
-                        <span class="category-tag px-2 py-0.5 rounded text-[10px] font-bold category-fed flex-shrink-0 mt-0.5">联储</span>
-                        <div class="flex-1">
-                            <p class="text-sm md:text-base font-medium text-slate-100">波士顿联储主席柯林斯、芝加哥联储主席古尔斯比发表讲话</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Thursday 05.14 -->
-        <div class="relative mb-6 animate-slide-up" style="animation-delay: 0.4s" data-day="thursday">
-            <div class="flex flex-col md:flex-row gap-4 md:gap-8">
-                <div class="md:w-24 flex-shrink-0 flex md:flex-col items-center md:items-end gap-3 md:gap-1 z-10">
-                    <div class="date-badge w-16 h-16 md:w-20 md:h-20 rounded-2xl flex flex-col items-center justify-center text-white shadow-lg shadow-blue-500/20">
-                        <span class="text-xs md:text-sm font-medium opacity-90">05.14</span>
-                        <span class="text-lg md:text-2xl font-black">周四</span>
-                    </div>
-                    <div class="hidden md:block w-4 h-4 rounded-full bg-blue-500 border-4 border-slate-900 absolute left-10 top-8"></div>
-                </div>
-
-                <div class="flex-1 glass-card rounded-xl p-4 md:p-5 space-y-3">
-                    <div class="event-item flex items-start gap-3 highlight-pulse rounded-lg p-2 -mx-2 border border-transparent" data-category="diplomacy">
-                        <span class="category-tag px-2 py-0.5 rounded text-[10px] font-bold category-diplomacy flex-shrink-0 mt-0.5">外交</span>
-                        <div class="flex-1">
-                            <p class="text-sm md:text-base font-bold text-white">特朗普访华预期窗口 5/14-15 <span class="text-xs font-normal text-red-400 ml-1">★ 待确认</span></p>
-                            <p class="text-xs text-slate-500 mt-0.5">外交部：中美双方就此事保持着沟通；市场关注随行企业代表团</p>
-                        </div>
-                    </div>
-
-                    <div class="event-item flex items-start gap-3 highlight-pulse rounded-lg p-2 -mx-2 border border-transparent" data-category="macro">
-                        <span class="category-tag px-2 py-0.5 rounded text-[10px] font-bold category-macro flex-shrink-0 mt-0.5">宏观</span>
-                        <div class="flex-1">
-                            <p class="text-sm md:text-base font-bold text-white">美国4月零售销售环比、5月9日当周首次申请失业救济人数 <span class="text-xs font-normal text-red-400 ml-1">★</span></p>
-                            <p class="text-xs text-slate-500 mt-0.5">20:30 | 市场关注消费韧性与就业市场变化</p>
-                        </div>
-                        <span class="text-xs text-blue-400 font-mono font-bold">20:30</span>
-                    </div>
-
-                    <div class="event-item flex items-start gap-3" data-category="ai">
-                        <span class="category-tag px-2 py-0.5 rounded text-[10px] font-bold category-ai flex-shrink-0 mt-0.5">AI</span>
-                        <div class="flex-1">
-                            <p class="text-sm md:text-base font-medium text-slate-100">百度Create继续；杭州具身智能人形机器人展 5/14-16</p>
-                        </div>
-                    </div>
-
-                    <div class="event-item flex items-start gap-3" data-category="industry">
-                        <span class="category-tag px-2 py-0.5 rounded text-[10px] font-bold category-industry flex-shrink-0 mt-0.5">发布</span>
-                        <div class="flex-1">
-                            <p class="text-sm md:text-base font-medium text-slate-100">顺网×华为「全光毫秒算网」算力服务解决方案发布</p>
-                        </div>
-                    </div>
-
-                    <div class="event-item flex items-start gap-3" data-category="fed">
-                        <span class="category-tag px-2 py-0.5 rounded text-[10px] font-bold category-fed flex-shrink-0 mt-0.5">联储</span>
-                        <div class="flex-1">
-                            <p class="text-sm md:text-base font-medium text-slate-100">达拉斯联储主席洛根（能源行业对话）、明尼阿波利斯联储主席卡什卡利参加讨论</p>
-                        </div>
-                    </div>
-
-                    <div class="event-item flex items-start gap-3" data-category="earnings">
-                        <span class="category-tag px-2 py-0.5 rounded text-[10px] font-bold category-earnings flex-shrink-0 mt-0.5">财报</span>
-                        <div class="flex-1">
-                            <p class="text-sm md:text-base font-medium text-slate-100">港股：华虹半导体、中芯国际、文远知行、吉利新能源</p>
-                            <p class="text-xs text-slate-500 mt-0.5">美股：思科</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Friday 05.15 -->
-        <div class="relative mb-6 animate-slide-up" style="animation-delay: 0.5s" data-day="friday">
-            <div class="flex flex-col md:flex-row gap-4 md:gap-8">
-                <div class="md:w-24 flex-shrink-0 flex md:flex-col items-center md:items-end gap-3 md:gap-1 z-10">
-                    <div class="date-badge w-16 h-16 md:w-20 md:h-20 rounded-2xl flex flex-col items-center justify-center text-white shadow-lg shadow-blue-500/20">
-                        <span class="text-xs md:text-sm font-medium opacity-90">05.15</span>
-                        <span class="text-lg md:text-2xl font-black">周五</span>
-                    </div>
-                    <div class="hidden md:block w-4 h-4 rounded-full bg-blue-500 border-4 border-slate-900 absolute left-10 top-8"></div>
-                </div>
-
-                <div class="flex-1 glass-card rounded-xl p-4 md:p-5 space-y-3">
-                    <div class="event-item flex items-start gap-3 highlight-pulse rounded-lg p-2 -mx-2 border border-transparent" data-category="macro">
-                        <span class="category-tag px-2 py-0.5 rounded text-[10px] font-bold category-macro flex-shrink-0 mt-0.5">宏观</span>
-                        <div class="flex-1">
-                            <p class="text-sm md:text-base font-bold text-white">中国香港一季度GDP同比终值 <span class="text-xs font-normal text-red-400 ml-1">★</span></p>
-                            <p class="text-xs text-slate-500 mt-0.5">16:30 发布</p>
-                        </div>
-                        <span class="text-xs text-blue-400 font-mono font-bold">16:30</span>
-                    </div>
-
-                    <div class="event-item flex items-start gap-3 highlight-pulse rounded-lg p-2 -mx-2 border border-transparent" data-category="fed">
-                        <span class="category-tag px-2 py-0.5 rounded text-[10px] font-bold category-fed flex-shrink-0 mt-0.5">联储</span>
-                        <div class="flex-1">
-                            <p class="text-sm md:text-base font-bold text-white">鲍威尔主席任期结束；沃什确认接任 <span class="text-xs font-normal text-red-400 ml-1">★ 重磅</span></p>
-                            <p class="text-xs text-slate-500 mt-0.5">美联储历史性时刻，市场关注未来货币政策路径</p>
-                        </div>
-                    </div>
-
-                    <div class="event-item flex items-start gap-3" data-category="ai">
-                        <span class="category-tag px-2 py-0.5 rounded text-[10px] font-bold category-ai flex-shrink-0 mt-0.5">AI</span>
-                        <div class="flex-1">
-                            <p class="text-sm md:text-base font-medium text-slate-100">腾讯云CodeBuddy/WorkBuddy新价执行</p>
-                            <p class="text-xs text-slate-500 mt-0.5">SaaS企业版198元/人/月，专有云企业版316元/人/月</p>
-                        </div>
-                    </div>
-
-                    <div class="event-item flex items-start gap-3" data-category="industry">
-                        <span class="category-tag px-2 py-0.5 rounded text-[10px] font-bold category-industry flex-shrink-0 mt-0.5">产业</span>
-                        <div class="flex-1">
-                            <p class="text-sm md:text-base font-medium text-slate-100">中国AIDC储能与电力大会 5/15-16（杭州）</p>
-                        </div>
-                    </div>
-
-                    <div class="event-item flex items-start gap-3" data-category="fed">
-                        <span class="category-tag px-2 py-0.5 rounded text-[10px] font-bold category-fed flex-shrink-0 mt-0.5">联储</span>
-                        <div class="flex-1">
-                            <p class="text-sm md:text-base font-medium text-slate-100">纽约联储主席威廉姆斯、克利夫兰联储主席哈玛克发表讲话</p>
-                        </div>
-                    </div>
-
-                    <div class="event-item flex items-start gap-3" data-category="earnings">
-                        <span class="category-tag px-2 py-0.5 rounded text-[10px] font-bold category-earnings flex-shrink-0 mt-0.5">财报</span>
-                        <div class="flex-1">
-                            <p class="text-sm md:text-base font-medium text-slate-100">港股：零跑汽车、清大东方、法拉帝、华住集团</p>
-                            <p class="text-xs text-slate-500 mt-0.5">美股：应用材料、Figma、美团-W、网易</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Saturday 05.16 -->
-        <div class="relative mb-6 animate-slide-up" style="animation-delay: 0.6s" data-day="saturday">
-            <div class="flex flex-col md:flex-row gap-4 md:gap-8">
-                <div class="md:w-24 flex-shrink-0 flex md:flex-col items-center md:items-end gap-3 md:gap-1 z-10">
-                    <div class="weekend-badge w-16 h-16 md:w-20 md:h-20 rounded-2xl flex flex-col items-center justify-center text-white shadow-lg">
-                        <span class="text-xs md:text-sm font-medium opacity-90">05.16</span>
-                        <span class="text-lg md:text-2xl font-black">周六</span>
-                    </div>
-                    <div class="hidden md:block w-4 h-4 rounded-full bg-slate-500 border-4 border-slate-900 absolute left-10 top-8"></div>
-                </div>
-
-                <div class="flex-1 glass-card rounded-xl p-4 md:p-5 space-y-3 opacity-80">
-                    <div class="event-item flex items-start gap-3" data-category="industry">
-                        <span class="category-tag px-2 py-0.5 rounded text-[10px] font-bold category-industry flex-shrink-0 mt-0.5">产业</span>
-                        <div class="flex-1">
-                            <p class="text-sm md:text-base font-medium text-slate-100">AIDC储能与电力大会继续（杭州）</p>
-                        </div>
-                    </div>
-
-                    <div class="event-item flex items-start gap-3" data-category="robot">
-                        <span class="category-tag px-2 py-0.5 rounded text-[10px] font-bold category-robot flex-shrink-0 mt-0.5">机器人</span>
-                        <div class="flex-1">
-                            <p class="text-sm md:text-base font-medium text-slate-100">杭州国际人形机器人展闭幕</p>
-                        </div>
-                    </div>
-
-                    <div class="event-item flex items-start gap-3" data-category="macro">
-                        <span class="category-tag px-2 py-0.5 rounded text-[10px] font-bold category-macro flex-shrink-0 mt-0.5">市场</span>
-                        <div class="flex-1">
-                            <p class="text-sm md:text-base font-medium text-slate-100">消化通胀数据、科技财报与地缘消息</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Sunday 05.17 -->
-        <div class="relative mb-8 animate-slide-up" style="animation-delay: 0.7s" data-day="sunday">
-            <div class="flex flex-col md:flex-row gap-4 md:gap-8">
-                <div class="md:w-24 flex-shrink-0 flex md:flex-col items-center md:items-end gap-3 md:gap-1 z-10">
-                    <div class="weekend-badge w-16 h-16 md:w-20 md:h-20 rounded-2xl flex flex-col items-center justify-center text-white shadow-lg">
-                        <span class="text-xs md:text-sm font-medium opacity-90">05.17</span>
-                        <span class="text-lg md:text-2xl font-black">周日</span>
-                    </div>
-                    <div class="hidden md:block w-4 h-4 rounded-full bg-slate-500 border-4 border-slate-900 absolute left-10 top-8"></div>
-                </div>
-
-                <div class="flex-1 glass-card rounded-xl p-4 md:p-5 space-y-3 opacity-80">
-                    <div class="event-item flex items-start gap-3" data-category="diplomacy">
-                        <span class="category-tag px-2 py-0.5 rounded text-[10px] font-bold bg-slate-700 text-slate-300 border border-slate-600 flex-shrink-0 mt-0.5">外交</span>
-                        <div class="flex-1">
-                            <p class="text-sm md:text-base font-medium text-slate-100">第十届中俄博览会于哈尔滨启幕</p>
-                        </div>
-                    </div>
-
-                    <div class="event-item flex items-start gap-3" data-category="macro">
-                        <span class="category-tag px-2 py-0.5 rounded text-[10px] font-bold bg-slate-700 text-slate-300 border border-slate-600 flex-shrink-0 mt-0.5">复盘</span>
-                        <div class="flex-1">
-                            <p class="text-sm md:text-base font-medium text-slate-100">通胀、财报、外交、伊朗局势</p>
-                        </div>
-                    </div>
-
-                    <div class="event-item flex items-start gap-3" data-category="earnings">
-                        <span class="category-tag px-2 py-0.5 rounded text-[10px] font-bold bg-slate-700 text-slate-300 border border-slate-600 flex-shrink-0 mt-0.5">预告</span>
-                        <div class="flex-1">
-                            <p class="text-sm md:text-base font-medium text-slate-100">5/18 Lumentum纳入纳斯达克100指数</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </main>
-
-    <!-- Contact Bar -->
-    <div class="max-w-6xl mx-auto mb-6">
-        <div class="contact-bar rounded-xl p-4 flex flex-col md:flex-row items-center justify-between gap-3">
-            <div class="flex items-center gap-3">
-                <div class="h-10 w-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                    </svg>
-                </div>
-                <div>
-                    <p class="text-sm font-bold text-white">东财策略陈果团队</p>
-                    <p class="text-xs text-slate-400">联系人：陈果 / 付原</p>
-                </div>
-            </div>
-            <div class="flex items-center gap-2 text-sm text-slate-300">
-                <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
-                </svg>
-                <span class="font-mono font-bold text-blue-400">15900960003</span>
-            </div>
+<body>
+    <!-- 顶部标题 -->
+    <div class="header">
+        <div class="header-tag">EASTMONEY STRATEGY</div>
+        <div class="header-title">东财策略陈果团队</div>
+        <div class="header-sub">下周重磅财经日历</div>
+        <div class="header-date">
+            <div class="date-range">05.11-05.17</div>
+            <div class="date-year">2026</div>
         </div>
     </div>
-
-    <!-- Footer -->
-    <footer class="max-w-6xl mx-auto mt-8 mb-12 text-center">
-        <div class="glass-card rounded-xl p-4 inline-block">
-            <p class="text-xs text-slate-500">
-                据公开信息整理 | 非投资建议 | 市场有风险，投资需谨慎
-            </p>
-            <p class="text-xs text-slate-600 mt-1 font-mono">更新于 2026-05-11</p>
+    
+    <!-- 联系人 -->
+    <div class="contact-bar">
+        <div class="contact-info">联系人：<span>陈果 / 付原</span></div>
+        <div class="contact-phone">15900960003</div>
+    </div>
+    
+    <!-- 主体内容 - 矩阵卡片 -->
+    <div class="main-content">
+        
+        <!-- 周一 -->
+        <div class="day-card">
+            <div class="day-header monday">
+                <div>
+                    <div class="day-name">周一</div>
+                    <div class="day-date">05.11</div>
+                </div>
+                <div class="day-badge">3事件</div>
+            </div>
+            <div class="day-content">
+                <div class="event-item">
+                    <div class="event-dot dot-macro"></div>
+                    <div class="event-text">
+                        <div class="event-title">中国4月CPI、PPI <span class="star-badge">重磅</span></div>
+                        <div class="event-desc">09:30 发布 | 市场关注通胀回升</div>
+                    </div>
+                </div>
+                <div class="event-item">
+                    <div class="event-dot dot-earnings"></div>
+                    <div class="event-text">
+                        <div class="event-title">贵州茅台业绩说明会</div>
+                        <div class="event-desc">16:00-17:30 全景路演</div>
+                    </div>
+                </div>
+                <div class="event-item">
+                    <div class="event-dot dot-event"></div>
+                    <div class="event-text">
+                        <div class="event-title">国仪量子IPO上会</div>
+                        <div class="event-desc">科创板审核</div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </footer>
-
-    <script>
-        function updateClock() {
-            const now = new Date();
-            const timeStr = now.toLocaleTimeString('zh-CN', { hour12: false });
-            document.getElementById('live-clock').textContent = timeStr;
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
-
-        function filterEvents(category) {
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-
-            const allEvents = document.querySelectorAll('.event-item');
-            const allDays = document.querySelectorAll('[data-day]');
-            
-            if (category === 'all') {
-                allEvents.forEach(event => {
-                    event.style.display = 'flex';
-                    event.parentElement.parentElement.parentElement.style.display = 'block';
-                });
-                allDays.forEach(day => day.style.display = 'block');
-            } else {
-                allDays.forEach(day => {
-                    const dayEvents = day.querySelectorAll('.event-item');
-                    let hasVisible = false;
-                    
-                    dayEvents.forEach(event => {
-                        if (event.dataset.category === category) {
-                            event.style.display = 'flex';
-                            hasVisible = true;
-                        } else {
-                            event.style.display = 'none';
-                        }
-                    });
-                    
-                    day.style.display = hasVisible ? 'block' : 'none';
-                });
-            }
-        }
-
-        document.querySelectorAll('.category-tag').forEach(tag => {
-            tag.addEventListener('mouseenter', function() {
-                const classes = Array.from(this.classList);
-                const category = classes.find(c => c.startsWith('category-') && c !== 'category-tag');
-                if (category) {
-                    document.querySelectorAll('.' + category).forEach(el => {
-                        el.style.transform = 'scale(1.05)';
-                        el.style.filter = 'brightness(1.3)';
-                    });
-                }
-            });
-            
-            tag.addEventListener('mouseleave', function() {
-                const classes = Array.from(this.classList);
-                const category = classes.find(c => c.startsWith('category-') && c !== 'category-tag');
-                if (category) {
-                    document.querySelectorAll('.' + category).forEach(el => {
-                        el.style.transform = '';
-                        el.style.filter = '';
-                    });
-                }
-            });
-        });
-
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.animate-slide-up').forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(20px)';
-            el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
-            observer.observe(el);
-        });
-    </script>
+        
+        <!-- 周二 -->
+        <div class="day-card">
+            <div class="day-header tuesday">
+                <div>
+                    <div class="day-name">周二</div>
+                    <div class="day-date">05.12</div>
+                </div>
+                <div class="day-badge">4事件</div>
+            </div>
+            <div class="day-content">
+                <div class="event-item">
+                    <div class="event-dot dot-macro"></div>
+                    <div class="event-text">
+                        <div class="event-title">美国4月CPI <span class="star-badge">重磅</span></div>
+                        <div class="event-desc">20:30 | 市场预期能源推升通胀</div>
+                    </div>
+                </div>
+                <div class="event-item">
+                    <div class="event-dot dot-earnings"></div>
+                    <div class="event-text">
+                        <div class="event-title">京东一季报电话会</div>
+                        <div class="event-desc">20:00 美股盘后</div>
+                    </div>
+                </div>
+                <div class="event-item">
+                    <div class="event-dot dot-event"></div>
+                    <div class="event-text">
+                        <div class="event-title">阿里云域名调价</div>
+                        <div class="event-desc">零时起执行</div>
+                    </div>
+                </div>
+                <div class="event-item">
+                    <div class="event-dot dot-event"></div>
+                    <div class="event-text">
+                        <div class="event-title">美债10年期420亿</div>
+                        <div class="event-desc">财政部再融资</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 周三 -->
+        <div class="day-card">
+            <div class="day-header wednesday">
+                <div>
+                    <div class="day-name">周三</div>
+                    <div class="day-date">05.13</div>
+                </div>
+                <div class="day-badge">4事件</div>
+            </div>
+            <div class="day-content">
+                <div class="event-item">
+                    <div class="event-dot dot-macro"></div>
+                    <div class="event-text">
+                        <div class="event-title">美国4月PPI <span class="star-badge">重磅</span></div>
+                        <div class="event-desc">20:30 | 生产端通胀压力</div>
+                    </div>
+                </div>
+                <div class="event-item">
+                    <div class="event-dot dot-earnings"></div>
+                    <div class="event-text">
+                        <div class="event-title">阿里/腾讯业绩会 <span class="star-badge">重磅</span></div>
+                        <div class="event-desc">19:30/20:00 关注AI资本开支</div>
+                    </div>
+                </div>
+                <div class="event-item">
+                    <div class="event-dot dot-event"></div>
+                    <div class="event-text">
+                        <div class="event-title">百度AI开发者大会</div>
+                        <div class="event-desc">Create 2026开幕</div>
+                    </div>
+                </div>
+                <div class="event-item">
+                    <div class="event-dot dot-event"></div>
+                    <div class="event-text">
+                        <div class="event-title">OPEC+月报</div>
+                        <div class="event-desc">原油市场报告</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 周四 -->
+        <div class="day-card">
+            <div class="day-header thursday">
+                <div>
+                    <div class="day-name">周四</div>
+                    <div class="day-date">05.14</div>
+                </div>
+                <div class="day-badge">4事件</div>
+            </div>
+            <div class="day-content">
+                <div class="event-item">
+                    <div class="event-dot dot-geo"></div>
+                    <div class="event-text">
+                        <div class="event-title">特朗普访华窗口 <span class="star-badge">待确认</span></div>
+                        <div class="event-desc">5/14-15 外交部确认沟通中</div>
+                    </div>
+                </div>
+                <div class="event-item">
+                    <div class="event-dot dot-macro"></div>
+                    <div class="event-text">
+                        <div class="event-title">美国零售销售/初请</div>
+                        <div class="event-desc">20:30 消费与就业数据</div>
+                    </div>
+                </div>
+                <div class="event-item">
+                    <div class="event-dot dot-event"></div>
+                    <div class="event-text">
+                        <div class="event-title">顺网×华为算网发布</div>
+                        <div class="event-desc">全光毫秒算网方案</div>
+                    </div>
+                </div>
+                <div class="event-item">
+                    <div class="event-dot dot-earnings"></div>
+                    <div class="event-text">
+                        <div class="event-title">中芯/华虹半导体财报</div>
+                        <div class="event-desc">港股业绩披露</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 周五 -->
+        <div class="day-card">
+            <div class="day-header friday">
+                <div>
+                    <div class="day-name">周五</div>
+                    <div class="day-date">05.15</div>
+                </div>
+                <div class="day-badge">4事件</div>
+            </div>
+            <div class="day-content">
+                <div class="event-item">
+                    <div class="event-dot dot-macro"></div>
+                    <div class="event-text">
+                        <div class="event-title">香港Q1 GDP终值</div>
+                        <div class="event-desc">16:30 同比数据</div>
+                    </div>
+                </div>
+                <div class="event-item">
+                    <div class="event-dot dot-geo"></div>
+                    <div class="event-text">
+                        <div class="event-title">鲍威尔任期结束 <span class="star-badge">重磅</span></div>
+                        <div class="event-desc">沃什接任美联储主席</div>
+                    </div>
+                </div>
+                <div class="event-item">
+                    <div class="event-dot dot-event"></div>
+                    <div class="event-text">
+                        <div class="event-title">腾讯云调价执行</div>
+                        <div class="event-desc">CodeBuddy新价生效</div>
+                    </div>
+                </div>
+                <div class="event-item">
+                    <div class="event-dot dot-earnings"></div>
+                    <div class="event-text">
+                        <div class="event-title">零跑/应用材料财报</div>
+                        <div class="event-desc">港股/美股业绩</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 周末 -->
+        <div class="day-card weekend-card">
+            <div class="day-header weekend">
+                <div>
+                    <div class="day-name">周末</div>
+                    <div class="day-date">05.16-05.17</div>
+                </div>
+                <div class="day-badge">3事件</div>
+            </div>
+            <div class="day-content">
+                <div class="event-item">
+                    <div class="event-dot dot-event"></div>
+                    <div class="event-text">
+                        <div class="event-title">AIDC储能大会</div>
+                        <div class="event-desc">5/15-16 杭州</div>
+                    </div>
+                </div>
+                <div class="event-item">
+                    <div class="event-dot dot-event"></div>
+                    <div class="event-text">
+                        <div class="event-title">人形机器人展闭幕</div>
+                        <div class="event-desc">5/14-16 杭州</div>
+                    </div>
+                </div>
+                <div class="event-item">
+                    <div class="event-dot dot-geo"></div>
+                    <div class="event-text">
+                        <div class="event-title">中俄博览会启幕</div>
+                        <div class="event-desc">5/17 哈尔滨</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    
+    <!-- 底部 -->
+    <div class="footer">
+        <div class="footer-text">据公开信息整理 | 非投资建议 | 市场有风险，投资需谨慎</div>
+    </div>
 </body>
-</html>
+</html>'''
+
+# 保存文件
+with open('/mnt/agents/output/财经日历_手机全屏版.html', 'w', encoding='utf-8') as f:
+    f.write(html_code)
+
+print("✅ 手机全屏版财经日历已生成！")
+print("\n设计特点：")
+print("1. 16:9手机全屏适配")
+print("2. 橙色(#e95503)为主色调，用于标题栏、重磅标记、周一/周三/周五卡片")
+print("3. 蓝色(#4f80bd)为辅色，用于周二/周四卡片")
+print("4. 灰色(#d9d9d9)用于文字和次要元素")
+print("5. 矩阵卡片式布局，2列网格")
+print("6. 周末卡片跨两列特殊处理")
+print("7. 去除了筛选、全局关注等复杂功能")
+print("8. 重磅事件用橙色badge标记")
+print("9. 圆角卡片、渐变头部、圆点标识类型")
+print("\n文件路径：/mnt/agents/output/财经日历_手机全屏版.html")
